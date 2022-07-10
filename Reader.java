@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.LinkedList;
 
 public class Reader {
 	File file;
@@ -17,16 +18,20 @@ public class Reader {
 		}
 	}
 
-	public void lerArquivo() {
+	public LinkedList lerArquivo() {
+		LinkedList<String> pedigreeList = new LinkedList<String>();
+		scanner.nextLine();
 		while (scanner.hasNext()) {
 			String line = scanner.nextLine();
 			String[] animal;
-			String[] words = line.split(" ");
+			String[] words = line.split("\n");
 			for(int i=0;i<words.length;i++){
 				animal = line.split(",");
-				Pedigree exemplo = new Pedigree(animal[0], animal[1], animal[2], animal[3], animal[4], animal[5], animal[6]);
-				System.out.println(exemplo.toString());
+				Pedigree exemplo = new Pedigree(animal[0].replace("\"", ""), animal[1].replace("\"",""), animal[2].replace("\"",""));
+				//System.out.println(exemplo.toString());
+				pedigreeList.add(exemplo.toString());
 			}
 		}
+		return pedigreeList;
 	}
 }
