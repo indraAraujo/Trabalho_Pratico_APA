@@ -18,8 +18,8 @@ public class Reader {
 		}
 	}
 
-	public LinkedList lerArquivo() {
-		LinkedList<String> pedigreeList = new LinkedList<String>();
+	public LinkedList<Pedigree> lerArquivo() {
+		LinkedList<Pedigree> pedigreeList = new LinkedList<Pedigree>();
 		scanner.nextLine();
 		while (scanner.hasNext()) {
 			String line = scanner.nextLine();
@@ -29,7 +29,7 @@ public class Reader {
 				animal = line.split(",");
 				Pedigree exemplo = new Pedigree(animal[0].replace("\"", ""), animal[1].replace("\"",""), animal[2].replace("\"",""));
 				//System.out.println(exemplo.toString());
-				pedigreeList.add(exemplo.toString());
+				pedigreeList.add(exemplo);
 			}
 		}
 		return pedigreeList;
