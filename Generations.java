@@ -55,37 +55,43 @@ public class Generations {
                 }
             }
         }
-        if(this.getAnimals().size() == 0){
-            if(pedigreeList.size() == 0){
+        if (this.getAnimals().size() == 0) {
+            if (pedigreeList.size() == 0) {
                 // igp
-            }else{
-            System.out.println("Sem animais na geracao - final da familia");
+            } else {
+                System.out.println("Sem animais na geracao - final da familia");
             }
             return 0;
-        }else{
+        } else {
             System.out.println("Numero de animais da geracao " + this.gen + ": " + this.getAnimals().size());
             System.out.println("Restante " + pedigreeList.size());
-            if(pedigreeList.size()==0){
+            if (pedigreeList.size() == 0) {
                 System.out.println("\nTodos os animais inseridos.\n");
                 return 0;
             }
             return 1;
-            
+
         }
     }
 
     public void followingZeroFamilies(LinkedList<Pedigree> pedigreeList) {
         System.out.println("\nConstruindo geracao 0");
-        String idAns;
         Pedigree primeiro = pedigreeList.getFirst();
-        if (primeiro.getIdPai().equals("0")){
-            idAns = primeiro.getIdMae();
-        }else{
-            idAns = primeiro.getIdPai();
+        Pedigree aux;
+        if (!primeiro.getIdPai().equals("0")) {
+            if (!primeiro.getIdMae().equals("0")) {
+                aux = new Pedigree(primeiro.getIdPai());
+                this.addInGeneration(aux);
+                aux = new Pedigree(primeiro.getIdMae());
+                this.addInGeneration(aux);
+            } else {
+                aux = new Pedigree(primeiro.getIdPai());
+                this.addInGeneration(aux);
+            }
+        } else {
+            aux = new Pedigree(primeiro.getIdMae());
+            this.addInGeneration(aux);
         }
-        primeiro = new Pedigree(idAns);
-        this.addInGeneration(primeiro);
-        System.out.println("Familia : "+primeiro.getId());
-}
+    }
 
 }

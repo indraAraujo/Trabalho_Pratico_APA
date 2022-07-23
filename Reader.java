@@ -29,6 +29,24 @@ public class Reader {
 		buffWrite.close();
 	}
 
+	public static void writeAll(String path, LinkedList<Generations> generations) throws IOException {
+		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
+		for(int i=0;i<generations.size();i++){
+			buffWrite.append(generations.get(i).gen + "<");
+			if(generations.get(i).getGen() == 0){
+				for(int j=0;j<generations.get(i).getAnimals().size();j++){
+					buffWrite.append(generations.get(i).getAnimals().get(j).getId() + ",");
+				}
+			}else{
+			for(int j=0;j<generations.get(i).getAnimals().size();j++){
+				buffWrite.append(generations.get(i).getAnimals().get(j).toString() + ",");
+			}
+		}
+			buffWrite.append(">\n");
+		}
+		buffWrite.close();
+	}
+
 	public LinkedList<Pedigree> lerArquivo() {
 		LinkedList<Pedigree> pedigreeList = new LinkedList<Pedigree>();
 		scanner.nextLine();
