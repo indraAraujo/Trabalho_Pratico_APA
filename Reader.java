@@ -1,5 +1,8 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.LinkedList;
 
@@ -16,6 +19,14 @@ public class Reader {
 		} catch (FileNotFoundException fe) {
 			System.out.println("Exception: " + fe);
 		}
+	}
+
+	public static void escritor(String path, LinkedList<Pedigree> pedigreeList) throws IOException {
+		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
+		for(int i=0;i<pedigreeList.size();i++){
+			buffWrite.append(pedigreeList.get(i).toString() + "\n");
+		}
+		buffWrite.close();
 	}
 
 	public LinkedList<Pedigree> lerArquivo() {

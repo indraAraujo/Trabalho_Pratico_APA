@@ -10,6 +10,12 @@ public class Pedigree {
     this.idMae = mae;
     }
 
+    public Pedigree(String id){
+        this.id = id;
+        this.idMae = "NULL";
+        this.idPai = "NULL";
+        }
+
 
     public String getId() {
         return this.id;
