@@ -12,8 +12,8 @@ public class Pedigree {
 
     public Pedigree(String id){
         this.id = id;
-        this.idMae = "";
-        this.idPai = "";
+        this.idMae = "0";
+        this.idPai = "0";
         }
 
 

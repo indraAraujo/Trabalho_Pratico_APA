@@ -12,14 +12,12 @@ public class Main {
         while (!pedigreeList.isEmpty()) {
             genNumber = 0;
             moreChildren = 1;
+            geracao = new Generations(0);
+            geracoes.add(geracao);
             if (start == 1) {
-                geracao = new Generations(0);
                 start = geracao.generationZero(pedigreeList);
-                geracoes.add(geracao);
             } else {
-                geracao = new Generations(0);
                 geracao.followingZeroFamilies(pedigreeList);
-                geracoes.add(geracao); //
             }
             while (moreChildren == 1) {
                 genNumber++;
@@ -29,6 +27,7 @@ public class Main {
                 geracao = nextGeneration;
             }
         }
+
           try { 
           reader.writeAll("saida.txt",geracoes);
           } catch (IOException e) {

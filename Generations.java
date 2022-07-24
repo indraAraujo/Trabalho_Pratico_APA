@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Generations {
     int gen;
@@ -44,6 +43,37 @@ public class Generations {
     }
 
     public int followingGenerations(Generations geracao, LinkedList<Pedigree> pedigreeList) {
+        System.out.println("\nConstruindo geracao " + this.gen);
+        for (int i = 0; i < geracao.getAnimals().size(); i++) {
+            for (int j = 0; j < pedigreeList.size(); j++) {
+                if (pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)
+                        || pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)) {
+                    this.addInGeneration(pedigreeList.get(j));
+                    pedigreeList.remove(j);
+                    j--;
+                }
+            }
+        }
+        if (this.getAnimals().size() == 0) {
+            if (pedigreeList.size() == 0) {
+                // igp
+            } else {
+                System.out.println("Sem animais na geracao - final da familia");
+            }
+            return 0;
+        } else {
+            System.out.println("Numero de animais da geracao " + this.gen + ": " + this.getAnimals().size());
+            System.out.println("Restante " + pedigreeList.size());
+            if (pedigreeList.size() == 0) {
+                System.out.println("\nTodos os animais inseridos.\n");
+                return 0;
+            }
+            return 1;
+
+        }
+    }
+
+    public int followingZGenerations(Generations geracao, LinkedList<Pedigree> pedigreeList) {
         System.out.println("\nConstruindo geracao " + this.gen);
         for (int i = 0; i < geracao.getAnimals().size(); i++) {
             for (int j = 0; j < pedigreeList.size(); j++) {
