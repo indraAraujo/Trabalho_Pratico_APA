@@ -29,6 +29,7 @@ public class Generations {
     }
 
     public int generationZero(LinkedList<Pedigree> pedigreeList) {
+        System.out.println("Total de animais: "+pedigreeList.size());
         System.out.println("----------------------------------------------\nConstruindo a geracao "+this.gen);
         for (int i = 0; i < pedigreeList.size(); i++) {
             if (pedigreeList.get(i).getIdPai().equals("0") && pedigreeList.get(i).getIdMae().equals("0")) {

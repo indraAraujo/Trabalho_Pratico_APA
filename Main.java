@@ -8,6 +8,7 @@ public class Main {
         LinkedList<Generations> geracoes = new LinkedList<Generations>();
         Generations nextGeneration;
         Generations geracao;
+        Kinships parentesco;
         int moreChildren = 1, genNumber = 0;
         pedigreeList = arq.dataFix();
         arq = new FileHandler(args[0]);
@@ -27,6 +28,19 @@ public class Main {
                 geracao = nextGeneration;
             }
         }
+
+        for(int g=0;g<geracoes.size();g++){
+        for(int i=1;i<geracoes.get(g).getAnimals().size();i++){
+           parentesco = new Kinships(geracoes.get(g),geracoes.get(g).getAnimals().get(i));
+           parentesco.searchForBrothers();
+           if(!parentesco.getBrothers().isEmpty()){
+            System.out.println("Animal: "+parentesco.getAnimal().getId()+" Irmaos completos: "+parentesco.getBrothers());
+        }
+        if(!parentesco.getHalfBrothers().isEmpty()){
+            System.out.println("Animal: "+parentesco.getAnimal().getId()+" Meio irmaos: "+parentesco.getHalfBrothers());
+        }
+        }
+    }
           try {
             System.out.println("**********************************************\nGerando arquivo de saida...\n"); 
           arq.writeAll("saida.txt",geracoes);
