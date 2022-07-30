@@ -21,7 +21,7 @@ public class FileHandler {
 		}
 	}
 
-	public void escritor(String path, LinkedList<Pedigree> pedigreeList) throws IOException {
+	public void escritor(String path, LinkedList<Pedigree> pedigreeList) throws IOException { // funcao pra criar o new.csv (explicacao abaixo)
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
 		for(int i=0;i<pedigreeList.size();i++){
 			buffWrite.append("\""+pedigreeList.get(i).getId()+"\",\""+pedigreeList.get(i).getIdPai()+"\",\""+pedigreeList.get(i).getIdMae()+"\"\n");
@@ -29,10 +29,10 @@ public class FileHandler {
 		buffWrite.close();
 	}
 
-	public void createKinships(String path,float[][] mat,int matSize) throws IOException {
+	public void createKinships(String path,float[][] mat,int matSize) throws IOException { // funcao que cria a matriz de saida (parentesco.txt)
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
-		for(int i=0;i<matSize;i++){
-			for(int j=0;j<matSize;j++){
+		for(int i=1;i<matSize;i++){
+			for(int j=1;j<matSize;j++){
 				buffWrite.append("["+mat[i][j]+"]");
 			}
 			buffWrite.append("\n");
@@ -40,7 +40,7 @@ public class FileHandler {
 		buffWrite.close();
 	}
 
-	public void writeAll(String path, LinkedList<Generations> generations) throws IOException {
+	public void writeAll(String path, LinkedList<Generations> generations) throws IOException { // funcao que cria a lista geracoes com seus respectivos animais
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
 		for(int i=0;i<generations.size();i++){
 			buffWrite.append(generations.get(i).gen + "<");
@@ -58,7 +58,7 @@ public class FileHandler {
 		buffWrite.close();
 	}
 
-	public LinkedList<Pedigree> lerArquivo(LinkedList<Pedigree> fixData) {
+	public LinkedList<Pedigree> lerArquivo(LinkedList<Pedigree> fixData) { // funcao que le a entrada
 		LinkedList<Pedigree> pedigreeList = fixData;
 		int shift = pedigreeList.size();
 		int cont =0;
@@ -78,20 +78,20 @@ public class FileHandler {
 		}
 		return pedigreeList;
 	}
-	public LinkedList<Pedigree> dataFix() {
-		LinkedList<String> filhos = new LinkedList<String>();
-        LinkedList<String> pais = new LinkedList<String>();
-		LinkedList<Pedigree> complement = new LinkedList<Pedigree>();
-		String id;
-		Pedigree emptyAncestor;
-		scanner.nextLine();
+	public LinkedList<Pedigree> dataFix() { // essa funcao eh a funcao que faz o preprocessamente que eu estava falando, ela eh MUITO importante porque nesse .csv
+		LinkedList<String> filhos = new LinkedList<String>(); // de entrada existem alguns pais e maes que sao referenciados, que nem ao menos fazem parte do banco
+        LinkedList<String> pais = new LinkedList<String>();		// isto eh, imaginem que o animal X esta dizendo que seus pais sao Y e Z, porem Y e Z nao fazem parte
+		LinkedList<Pedigree> complement = new LinkedList<Pedigree>(); // do banco de dados. Isso acontece direto nesse banco, entao esta funcao eh essencial.
+		String id;														// Se nao usar essa funcao a arvore genealogica fica quebrada em diversas arvores
+		Pedigree emptyAncestor;											// pois ela nao consegue criar uma relacao entre todos os animais, em outras palavras
+		scanner.nextLine();												// a geracao 0 nao fica completa, e isso quebra toda a arvore.
 		while (scanner.hasNext()) {
-			String line = scanner.nextLine();
-			String[] animal;
-			String[] words = line.split("\n");
-			for(int i=0;i<words.length;i++){
-				animal = line.split(",");
-                if(!filhos.contains(animal[0])){
+			String line = scanner.nextLine();							// basicamente esta funcao rola antes de ler de vez o .csv, ele procura por esses pais que
+			String[] animal;											// nao estao presentes no banco de dados, e adiciona eles no COMECO do new.csv, com seus pais.
+			String[] words = line.split("\n");							// sendo 0 e 0 (assim eles tambem pertencem a geracao 0). Caso essa funcao nao existisse e a gente
+			for(int i=0;i<words.length;i++){							// simplesmente assumisse que esses pais e maes que nao estao no banco fossem igual a 0, nao seriam
+				animal = line.split(",");								// considerados parentescos entre irmaos desses pais e maes, entao, mais uma vez, essa funcao eh
+                if(!filhos.contains(animal[0])){						// essencial pro programa.
                     filhos.add(animal[0]);
                 }
                 if(!pais.contains(animal[1])){
