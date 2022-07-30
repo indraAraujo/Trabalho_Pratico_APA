@@ -2,17 +2,19 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class Main {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         FileHandler arq = new FileHandler(args[0]);
         LinkedList<Pedigree> pedigreeList;
         LinkedList<Generations> geracoes = new LinkedList<Generations>();
         Generations nextGeneration;
         Generations geracao;
-        Kinships parentesco;
         int moreChildren = 1, genNumber = 0;
         pedigreeList = arq.dataFix();
         arq = new FileHandler(args[0]);
         pedigreeList = arq.lerArquivo(pedigreeList);
+        int matSize = pedigreeList.size()+1;
+        Kinships parentesco = new Kinships(matSize);
+        arq.escritor("matriz.csv", pedigreeList);
 
         while (!pedigreeList.isEmpty()) {
             genNumber = 0;
@@ -23,24 +25,13 @@ public class Main {
             while (moreChildren == 1) {
                 genNumber++;
                 nextGeneration = new Generations(genNumber);
-                moreChildren = nextGeneration.followingGenerations(geracao, pedigreeList);
+                moreChildren = nextGeneration.followingGenerations(geracao, pedigreeList,parentesco);
                 geracoes.add(nextGeneration);
                 geracao = nextGeneration;
+                parentesco.addKinship(nextGeneration,geracoes);
             }
         }
-
-        for(int g=0;g<geracoes.size();g++){
-        for(int i=1;i<geracoes.get(g).getAnimals().size();i++){
-           parentesco = new Kinships(geracoes.get(g),geracoes.get(g).getAnimals().get(i));
-           parentesco.searchForBrothers();
-           if(!parentesco.getBrothers().isEmpty()){
-            System.out.println("Animal: "+parentesco.getAnimal().getId()+" Irmaos completos: "+parentesco.getBrothers());
-        }
-        if(!parentesco.getHalfBrothers().isEmpty()){
-            System.out.println("Animal: "+parentesco.getAnimal().getId()+" Meio irmaos: "+parentesco.getHalfBrothers());
-        }
-        }
-    }
+        arq.createKinships("parentesco.txt", parentesco.mat,matSize);
           try {
             System.out.println("**********************************************\nGerando arquivo de saida...\n"); 
           arq.writeAll("saida.txt",geracoes);

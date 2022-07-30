@@ -24,7 +24,18 @@ public class FileHandler {
 	public void escritor(String path, LinkedList<Pedigree> pedigreeList) throws IOException {
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
 		for(int i=0;i<pedigreeList.size();i++){
-			buffWrite.append(pedigreeList.get(i).toString() + "\n");
+			buffWrite.append("\""+pedigreeList.get(i).getId()+"\",\""+pedigreeList.get(i).getIdPai()+"\",\""+pedigreeList.get(i).getIdMae()+"\"\n");
+		}
+		buffWrite.close();
+	}
+
+	public void createKinships(String path,float[][] mat,int matSize) throws IOException {
+		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
+		for(int i=0;i<matSize;i++){
+			for(int j=0;j<matSize;j++){
+				buffWrite.append("["+mat[i][j]+"]");
+			}
+			buffWrite.append("\n");
 		}
 		buffWrite.close();
 	}
@@ -49,16 +60,20 @@ public class FileHandler {
 
 	public LinkedList<Pedigree> lerArquivo(LinkedList<Pedigree> fixData) {
 		LinkedList<Pedigree> pedigreeList = fixData;
+		int shift = pedigreeList.size();
+		int cont =0;
 		scanner.nextLine();
+		//System.out.println(cont+shift);
 		while (scanner.hasNext()) {
 			String line = scanner.nextLine();
 			String[] animal;
 			String[] words = line.split("\n");
 			for(int i=0;i<words.length;i++){
 				animal = line.split(",");
-				Pedigree exemplo = new Pedigree(animal[0].replace("\"", ""), animal[1].replace("\"",""), animal[2].replace("\"",""));
+				Pedigree exemplo = new Pedigree(animal[0].replace("\"", ""), animal[1].replace("\"",""), animal[2].replace("\"",""),(cont+shift));
 				//System.out.println(exemplo.toString());
 				pedigreeList.add(exemplo);
+				cont++;
 			}
 		}
 		return pedigreeList;
@@ -96,10 +111,11 @@ public class FileHandler {
             }
         }
        // System.out.println("** Fim **");
-       // System.out.println("Pais: "+pais.size());
-		for(int i=0;i<pais.size();i++){
+        //System.out.println("Pais: "+pais.size());
+		for(int i=1;i<pais.size();i++){
 			id = pais.get(i);
-			emptyAncestor = new Pedigree(id.replace("\"", ""));
+			//System.out.println(i);
+			emptyAncestor = new Pedigree(id.replace("\"", ""),i);
 			complement.add(emptyAncestor);
 		}
 		return complement;

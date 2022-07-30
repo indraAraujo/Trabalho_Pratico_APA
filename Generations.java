@@ -28,7 +28,7 @@ public class Generations {
         this.animals = animals;
     }
 
-    public int generationZero(LinkedList<Pedigree> pedigreeList) {
+    public void generationZero(LinkedList<Pedigree> pedigreeList) {
         System.out.println("Total de animais: "+pedigreeList.size());
         System.out.println("----------------------------------------------\nConstruindo a geracao "+this.gen);
         for (int i = 0; i < pedigreeList.size(); i++) {
@@ -40,10 +40,9 @@ public class Generations {
         }
         System.out.println("Numero de animais da geracao 0: " + this.getAnimals().size());
         System.out.println("Restante " + pedigreeList.size());
-        return 0;
     }
 
-    public int followingGenerations(Generations geracao, LinkedList<Pedigree> pedigreeList) {
+    public int followingGenerations(Generations geracao, LinkedList<Pedigree> pedigreeList, Kinships parentesco) {
         System.out.println("\nConstruindo geracao " + this.gen);
         for (int i = 0; i < geracao.getAnimals().size(); i++) {
             for (int j = 0; j < pedigreeList.size(); j++) {
