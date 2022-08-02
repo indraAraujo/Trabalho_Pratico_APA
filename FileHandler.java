@@ -60,22 +60,29 @@ public class FileHandler {
 
 	public LinkedList<Pedigree> lerArquivo(LinkedList<Pedigree> fixData) { // funcao que le a entrada
 		LinkedList<Pedigree> pedigreeList = fixData;
+		LinkedList<String> ids = new LinkedList<String>();
+		for(int i=0;i<pedigreeList.size();i++){
+			ids.add(pedigreeList.get(i).getId());
+		}
 		int shift = pedigreeList.size();
 		int cont =0;
 		scanner.nextLine();
-		//System.out.println(cont+shift);
 		while (scanner.hasNext()) {
 			String line = scanner.nextLine();
 			String[] animal;
-			String[] words = line.split("\n");
-			for(int i=0;i<words.length;i++){
 				animal = line.split(",");
-				Pedigree exemplo = new Pedigree(animal[0].replace("\"", ""), animal[1].replace("\"",""), animal[2].replace("\"",""),(cont+shift));
+/*					for(int i=0;i<pedigreeList.size();i++){
+						if(pedigreeList.get(i).id.equals(pai.id)){
+							pai.setIndex(pedigreeList.get(i).index); 
+						}else if(pedigreeList.get(i).id.equals(mae.id)){
+							mae.setIndex(pedigreeList.get(i).index);
+						}
+					}*/
+				Pedigree exemplo = new Pedigree(animal[0].replace("\"", ""), animal[1].replace("\"", ""), animal[2].replace("\"", ""),(cont+shift));
 				//System.out.println(exemplo.toString());
-				pedigreeList.add(exemplo);
+				pedigreeList.add(exemplo); 
 				cont++;
-			}
-		}
+				}
 		return pedigreeList;
 	}
 	public LinkedList<Pedigree> dataFix() { // essa funcao eh a funcao que faz o preprocessamente que eu estava falando, ela eh MUITO importante porque nesse .csv
@@ -114,10 +121,11 @@ public class FileHandler {
         //System.out.println("Pais: "+pais.size());
 		for(int i=1;i<pais.size();i++){
 			id = pais.get(i);
-			//System.out.println(i);
-			emptyAncestor = new Pedigree(id.replace("\"", ""),i);
+			emptyAncestor = new Pedigree(id.replace("\"", ""),"0",i);
 			complement.add(emptyAncestor);
+			//System.out.println(emptyAncestor.toString());
 		}
+
 		return complement;
 	}
 }

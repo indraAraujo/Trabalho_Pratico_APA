@@ -12,43 +12,52 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
         }
     }
     
-    public void addKinship(Generations generation,LinkedList<Generations> generations){ // preenche a matriz de coanscestralidade
-        String grabberPai;                                                              
-        int grabberIndexPai;
-        int grabberIndexMae;
+    public void addKinship(Generations generation){ // preenche a matriz de coanscestralidade
         for(int i=0;i<generation.getAnimals().size();i++){          // vai pegando os animais da geracao
-            this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getIndex()] = (float)1; // seta o parentesco dele com ele mesmo pra 1
-            this.searchForBrothers(generation.getAnimals().get(i),generation); // procura os irmaos e meio irmaos do animal
-            if(!this.getBrothers().isEmpty()){ // caso tenha irmaos completos
-             for(int j=0;j<this.getBrothers().size();j++){
-             //System.out.println("Animal: "+generation.getAnimals().get(i).getIndex()+" Irmaos completos: "+this.getBrothers());
-             if(generation.getGen() == 1){ // se for a geracao 1, o parentesco dos pais eh 0 (os animais da geracao 0 n tem parentesco nenhum, pois seus pais sao 0 e 0)
-                grabberIndexMae = generation.getAnimals().get(i).getIndexMae();
-                grabberIndexPai = generation.getAnimals().get(i).getIndexPai();
+            this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getIndex()] = (float)1;
+            searchForBrothers(generation.getAnimals().get(i), generation);
+            if(generation.getGen() == 1){
                 generation.getAnimals().get(i).setParentsKin((float)0);
-                this.mat[generation.getAnimals().get(i).getIndex()][grabberIndexMae] = (float)0.5; // seta o parentesco do animal com os pais pra 0.5, ja que os pais n tem parentesco
-                this.mat[generation.getAnimals().get(i).getIndex()][grabberIndexPai] = (float)0.5;
-                this.getBrothers().get(j).setParentsKin((float)0);
-                this.mat[generation.getAnimals().get(i).getIndex()][this.getBrothers().get(j).getIndex()] = (float)0.25+generation.getAnimals().get(i).getParentsKin(); // parentesco com os irmaos 0.25 pois os mais nao tem parentesco
-             }else{ // caso nao for a geracao 1, para definir o parentesco de dois irmaos completos eh necessario somar 0.25 + o parentesco dos pais / 4 (algo assim, tem que revisar e ajeitar essa parte)
-                grabberPai = generation.getAnimals().get(i).getIdPai(); // escrevendo isso percebi que ta faltando setar o parentesco destes animais com seus pais, por isso somente a geracao 1 tem parentesco com seus pais no parentesco.txt
-                for(int k=0;k<generations.get(generation.getGen()).getAnimals().size();k++){
-                    if(generations.get(generation.getGen()).getAnimals().get(k).getId().equals(grabberPai)){
-                        this.mat[generation.getAnimals().get(i).getIndex()][this.getBrothers().get(j).getIndex()] = (float)0.25+generation.getAnimals().get(i).getParentsKin();
-                    }    
+                if(!generation.getAnimals().get(i).getIdMae().equals("0")){
+                this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()] = (float)0.5;
                 }
-                this.getBrothers().get(j).setParentsKin((float)0);
-                this.mat[generation.getAnimals().get(i).getIndex()][this.getBrothers().get(j).getIndex()] = (float)0.25+generation.getAnimals().get(i).getParentsKin();
-             }
-             }
-         }
-         if(!this.getHalfBrothers().isEmpty()){ // caso tenha meio irmaos
-             for(int j=0;j<this.getHalfBrothers().size();j++){
-                 this.mat[generation.getAnimals().get(i).getIndex()][this.getHalfBrothers().get(j).getIndex()] = (float)0.125;
-             }
-         }
+                if(!generation.getAnimals().get(i).getIdPai().equals("0")){
+                this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()] = (float)0.5;
+                }
+                if(!this.brothers.isEmpty()){
+                    for(int j=0;j<generation.getAnimals().get(i).getBrothers().size();j++){
+                        this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getBrothers().get(j).getIndex()] = (float)0.25;
+                    }
+                } if (!this.halfBrothers.isEmpty()){
+                    for(int j=0;j<generation.getAnimals().get(i).getHalfBrothers().size();j++){
+                    this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getHalfBrothers().get(j).getIndex()] = (float)0.125;
+                }
+            }
+        }else{ // caso seja de uma geracao >= 2
+                if(generation.getAnimals().get(i).getPai().getBrothers().contains(generation.getAnimals().get(i).getMae())){ // se entrar eh pq os pais sao irmaos completos
+                    generation.getAnimals().get(i).setParentsKin((float)0.25);
+                }else if(generation.getAnimals().get(i).getPai().getHalfBrothers().contains(generation.getAnimals().get(i).getMae())){ // se entrar eh pq os pais sao meio irmaos
+                    generation.getAnimals().get(i).setParentsKin((float)0.125);
+                }else{
+                    generation.getAnimals().get(i).setParentsKin((float)0);
+                }
+                if(!generation.getAnimals().get(i).getIdMae().equals("0")){
+                this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()] = (float)0.5+((generation.getAnimals().get(i).getParentsKin()/2));
+                } if(!generation.getAnimals().get(i).getIdPai().equals("0")){
+                this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()] = (float)0.5+((generation.getAnimals().get(i).getParentsKin()/2));
+                }
+                if(!this.halfBrothers.isEmpty()){
+                    for(int j=0;j<generation.getAnimals().get(i).getBrothers().size();j++){
+                        this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getBrothers().get(j).getIndex()] = (float)0.25+(generation.getAnimals().get(i).getParentsKin()/4);
+                    }
+                } if (!this.halfBrothers.isEmpty()){
+                    for(int j=0;j<generation.getAnimals().get(i).getHalfBrothers().size();j++){
+                    this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getHalfBrothers().get(j).getIndex()] = (float)0.125;
+                }
+            }
          }
     }
+}
 
     public void searchForBrothers(Pedigree animal, Generations generation){ // funcao que procura pelos irmaos e meio irmaos do animal
         this.brothers = new LinkedList<Pedigree>(); // cria novas listas pra cada animal

@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 public class Main {
     public static void main(String args[]) throws IOException {
-        FileHandler arq = new FileHandler(args[0]);
+        FileHandler arq = new FileHandler("teste.txt");
         LinkedList<Pedigree> pedigreeList;
         LinkedList<Generations> geracoes = new LinkedList<Generations>();
         Generations nextGeneration;
@@ -25,10 +25,10 @@ public class Main {
             while (moreChildren == 1) { // enquanto existam animais que nao estao adicionados na arvore genealogica
                 genNumber++;
                 nextGeneration = new Generations(genNumber);  // cria uma nova geracao
-                moreChildren = nextGeneration.followingGenerations(geracao, pedigreeList,parentesco); // essa funcao existe pra encontrar a relacao entre a geracao passada e seus filhos
+                moreChildren = nextGeneration.followingGenerations(geracao, pedigreeList,parentesco,geracoes); // essa funcao existe pra encontrar a relacao entre a geracao passada e seus filhos
                 geracoes.add(nextGeneration); // adiciona a nova geracao a lista de geracoes
                 geracao = nextGeneration; // seta a geracao passada pra ser igual a geracao atual, para assim dar continuidade as proximas geracoes
-                parentesco.addKinship(nextGeneration,geracoes); // adiciona os parentescos da geracao 
+                parentesco.addKinship(nextGeneration); // adiciona os parentescos da geracao 
             }
         arq.createKinships("parentesco.txt", parentesco.mat,matSize); // quando nao existam mais animais para serem inseridos, cria um .txt com a matriz de parentesco
           try {                                                           // para entender essa matriz de parentesco, olhem para o new.csv que seria o banco de dados correto
