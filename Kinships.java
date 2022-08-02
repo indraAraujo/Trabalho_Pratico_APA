@@ -18,10 +18,10 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
             searchForBrothers(generation.getAnimals().get(i), generation);
             if(generation.getGen() == 1){
                 generation.getAnimals().get(i).setParentsKin((float)0);
-                if(!generation.getAnimals().get(i).getIdMae().equals("0")){
+                if(generation.getAnimals().get(i).getMae()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()] = (float)0.5;
                 }
-                if(!generation.getAnimals().get(i).getIdPai().equals("0")){
+                if(generation.getAnimals().get(i).getPai()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()] = (float)0.5;
                 }
                 if(!this.brothers.isEmpty()){
@@ -34,16 +34,17 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
                 }
             }
         }else{ // caso seja de uma geracao >= 2
+            if(generation.getAnimals().get(i).getMae()!=null && generation.getAnimals().get(i).getPai()!=null){
                 if(generation.getAnimals().get(i).getPai().getBrothers().contains(generation.getAnimals().get(i).getMae())){ // se entrar eh pq os pais sao irmaos completos
                     generation.getAnimals().get(i).setParentsKin((float)0.25);
                 }else if(generation.getAnimals().get(i).getPai().getHalfBrothers().contains(generation.getAnimals().get(i).getMae())){ // se entrar eh pq os pais sao meio irmaos
                     generation.getAnimals().get(i).setParentsKin((float)0.125);
-                }else{
+                }}else{
                     generation.getAnimals().get(i).setParentsKin((float)0);
                 }
-                if(!generation.getAnimals().get(i).getIdMae().equals("0")){
+                if(generation.getAnimals().get(i).getMae()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()] = (float)0.5+((generation.getAnimals().get(i).getParentsKin()/2));
-                } if(!generation.getAnimals().get(i).getIdPai().equals("0")){
+                } if(generation.getAnimals().get(i).getPai()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()] = (float)0.5+((generation.getAnimals().get(i).getParentsKin()/2));
                 }
                 if(!this.halfBrothers.isEmpty()){

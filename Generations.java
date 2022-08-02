@@ -47,28 +47,23 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
     public int followingGenerations(Generations geracao, LinkedList<Pedigree> pedigreeList, Kinships parentesco,
             LinkedList<Generations> geracoes) { // funcao para criar as geracoes seguintes (geracoes != 0)
         Pedigree mae, pai;
-        String idmae,idpai;
+        String idmae, idpai;
         Generations searchingGen;
         System.out.println("\nConstruindo geracao " + this.gen);
         for (int i = 0; i < geracao.getAnimals().size(); i++) {
             for (int j = 0; j < pedigreeList.size(); j++) {
-                if (!pedigreeList.get(j).getIdMae().equals("0")) {
-                    if (pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)
-                            || pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)) { // erro de
-                                                                                                        // logica,
-                        // precisamos encontrar
-                        // o id do outro "pai"
-                        // do animal
-                        if (pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)) {
-                            pedigreeList.get(j).setMae(geracao.getAnimals().get(i));
-                        }
-                        if (pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)) {
-                            pedigreeList.get(j).setPai(geracao.getAnimals().get(i));
-                        }
-                        this.addInGeneration(pedigreeList.get(j));
-                        pedigreeList.remove(j);
-                        j--;
+                if (pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)
+                        || pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)) { // erro de
+                                                                                                    // logica,
+                    if (pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)) {
+                        pedigreeList.get(j).setMae(geracao.getAnimals().get(i));
                     }
+                    if (pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)) {
+                        pedigreeList.get(j).setPai(geracao.getAnimals().get(i));
+                    }
+                    this.addInGeneration(pedigreeList.get(j));
+                    pedigreeList.remove(j);
+                    j--;
                 }
             }
         }
@@ -79,22 +74,15 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
 
             if (mae == null) {
                 idmae = this.animals.get(i).getIdMae();
-                for(int j=0;j<geracoes.size();j++){
-                    searchingGen = geracoes.get(j);
-                    for(int z=0;z<searchingGen.getAnimals().size();z++){
-                       if(searchingGen.getAnimals().get(z).id.equals(idmae)){
-                        this.animals.get(i).setMae(searchingGen.getAnimals().get(z));
-                       }
+                for (int j = 0; j < geracao.getAnimals().size(); j++) {
+                    if (this.animals.get(i).getIdMae().equals(geracao.getAnimals().get(j).getId())) {
+                        this.animals.get(i).setMae(geracao.getAnimals().get(j));
                     }
                 }
             } else if (pai == null) {
-                idpai = this.animals.get(i).getIdPai();
-                for(int j=0;j<geracoes.size();j++){
-                    searchingGen = geracoes.get(j);
-                    for(int z=0;z<searchingGen.getAnimals().size();z++){
-                       if(searchingGen.getAnimals().get(z).id.equals(idpai)){
-                        this.animals.get(i).setPai(searchingGen.getAnimals().get(z));
-                       }
+                for (int j = 0; j < geracao.getAnimals().size(); j++) {
+                    if (this.animals.get(i).getIdPai().equals(geracao.getAnimals().get(j).getId())) {
+                        this.animals.get(i).setPai(geracao.getAnimals().get(j));
                     }
                 }
             }

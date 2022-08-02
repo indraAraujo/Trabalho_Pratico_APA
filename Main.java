@@ -3,7 +3,8 @@ import java.util.LinkedList;
 
 public class Main {
     public static void main(String args[]) throws IOException {
-        FileHandler arq = new FileHandler("teste.txt");
+        FileHandler arq = new FileHandler(args[0]);
+        String pathparentesco = args[1];
         LinkedList<Pedigree> pedigreeList;
         LinkedList<Generations> geracoes = new LinkedList<Generations>();
         Generations nextGeneration;
@@ -30,10 +31,10 @@ public class Main {
                 geracao = nextGeneration; // seta a geracao passada pra ser igual a geracao atual, para assim dar continuidade as proximas geracoes
                 parentesco.addKinship(nextGeneration); // adiciona os parentescos da geracao 
             }
-        arq.createKinships("parentesco.txt", parentesco.mat,matSize); // quando nao existam mais animais para serem inseridos, cria um .txt com a matriz de parentesco
+        arq.createKinships(args[1], parentesco.mat,matSize); // quando nao existam mais animais para serem inseridos, cria um .txt com a matriz de parentesco
           try {                                                           // para entender essa matriz de parentesco, olhem para o new.csv que seria o banco de dados correto
             System.out.println("**********************************************\nGerando arquivo de saida...\n"); 
-          arq.writeAll("saida.txt",geracoes); // gera uma saida com a lista de geracoes e os correspondentes animais 
+          arq.writeAll("geracoes.txt",geracoes); // gera uma saida com a lista de geracoes e os correspondentes animais 
           } catch (IOException e) {
           e.printStackTrace();
           }
