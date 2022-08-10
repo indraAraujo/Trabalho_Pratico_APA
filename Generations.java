@@ -35,6 +35,8 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
         System.out.println("----------------------------------------------\nConstruindo a geracao " + this.gen);
         for (int i = 0; i < pedigreeList.size(); i++) {
             if (pedigreeList.get(i).getIdPai().equals("0") && pedigreeList.get(i).getIdMae().equals("0")) {
+                pedigreeList.get(i).brothers = new LinkedList<Pedigree>();
+                pedigreeList.get(i).halfBrothers = new LinkedList<Pedigree>();
                 this.addInGeneration(pedigreeList.get(i));
                 pedigreeList.remove(i);
                 i--;
@@ -46,67 +48,65 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
 
     public int followingGenerations(Generations geracao, LinkedList<Pedigree> pedigreeList, Kinships parentesco,
             LinkedList<Generations> geracoes) { // funcao para criar as geracoes seguintes (geracoes != 0)
-        Pedigree mae, pai;
-        String idmae, idpai;
-        Generations searchingGen;
+        Pedigree zero = new Pedigree("0");
         System.out.println("\nConstruindo geracao " + this.gen);
         for (int i = 0; i < geracao.getAnimals().size(); i++) {
             for (int j = 0; j < pedigreeList.size(); j++) {
-                if (pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)
-                        || pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)) { // erro de
-                                                                                                    // logica,
-                    if (pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)) {
-                        pedigreeList.get(j).setMae(geracao.getAnimals().get(i));
+                if(pedigreeList.get(j).idPai.equals("0")){
+                    pedigreeList.get(j).setPai(zero);
+                }else if(pedigreeList.get(j).idMae.equals("0")){
+                    pedigreeList.get(j).setMae(zero);
+                }
+                if (pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)) {
+                    pedigreeList.get(j).setMae(geracao.getAnimals().get(i));
+                    for(int k=0;k<geracao.getAnimals().size();k++){
+                        if(geracao.getAnimals().get(k).id.equals(pedigreeList.get(j).idPai)){
+                            pedigreeList.get(j).setPai(geracao.getAnimals().get(k));
+                            break;
+                        }
                     }
-                    if (pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)) {
-                        pedigreeList.get(j).setPai(geracao.getAnimals().get(i));
+                }
+                if (pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)) { 
+                    pedigreeList.get(j).setPai(geracao.getAnimals().get(i));
+                    for(int k=0;k<geracao.getAnimals().size();k++){
+                        if(geracao.getAnimals().get(k).id.equals(pedigreeList.get(j).idMae)){
+                            pedigreeList.get(j).setMae(geracao.getAnimals().get(k));
+                            break;
+                        }
                     }
+                }
+                if(pedigreeList.get(j).getMae() != null && pedigreeList.get(j).getPai() != null){
                     this.addInGeneration(pedigreeList.get(j));
                     pedigreeList.remove(j);
                     j--;
                 }
-            }
+                }
         }
 
-        for (int i = 0; i < this.animals.size(); i++) { // procura pelo pai/mae faltante dentro da geracao
-            pai = this.animals.get(i).getPai();
-            mae = this.animals.get(i).getMae();
+    // eh preciso procurar pelo pai faltante nas outras geracoes tambem,
+    // infelizmente (faz o tempo crescer d+)
 
-            if (mae == null) {
-                idmae = this.animals.get(i).getIdMae();
-                for (int j = 0; j < geracao.getAnimals().size(); j++) {
-                    if (this.animals.get(i).getIdMae().equals(geracao.getAnimals().get(j).getId())) {
-                        this.animals.get(i).setMae(geracao.getAnimals().get(j));
-                    }
-                }
-            } else if (pai == null) {
-                for (int j = 0; j < geracao.getAnimals().size(); j++) {
-                    if (this.animals.get(i).getIdPai().equals(geracao.getAnimals().get(j).getId())) {
-                        this.animals.get(i).setPai(geracao.getAnimals().get(j));
-                    }
-                }
-            }
+    if(this.getAnimals().size()==0)
 
-        } // eh preciso procurar pelo pai faltante nas outras geracoes tambem,
-          // infelizmente (faz o tempo crescer d+)
-
-        if (this.getAnimals().size() == 0) {
-            if (pedigreeList.size() == 0) {
-                // igp
-            } else {
-                System.out.println("Sem animais na geracao - final da familia");
-            }
-            return 0;
+    {
+        if (pedigreeList.size() == 0) {
+            // igp
         } else {
-            System.out.println("Numero de animais da geracao " + this.gen + ": " + this.getAnimals().size());
-            System.out.println("Restante " + pedigreeList.size());
-            if (pedigreeList.size() == 0) {
-                System.out.println("----------------------------------------------\nTodos os animais inseridos.");
-                return 0;
-            }
-            return 1;
-
+            System.out.println("Sem animais na geracao - final da familia");
         }
-    }
+        return 0;
+    }else
+    {
+        System.out.println("Numero de animais da geracao " + this.gen + ": " + this.getAnimals().size());
+        System.out.println("Restante " + pedigreeList.size());
+        if (pedigreeList.size() == 0) {
+            System.out.println("----------------------------------------------\nTodos os animais inseridos.");
+            return 0;
+        }
+        return 1;
 
+
+}
+
+}
 }

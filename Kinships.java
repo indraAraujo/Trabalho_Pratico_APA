@@ -34,7 +34,7 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
                 }
             }
         }else{ // caso seja de uma geracao >= 2
-            if(generation.getAnimals().get(i).getMae()!=null && generation.getAnimals().get(i).getPai()!=null){
+            if(!generation.getAnimals().get(i).getMae().id.equals("0") && !generation.getAnimals().get(i).getPai().id.equals("0")){
                 if(generation.getAnimals().get(i).getPai().getBrothers().contains(generation.getAnimals().get(i).getMae())){ // se entrar eh pq os pais sao irmaos completos
                     generation.getAnimals().get(i).setParentsKin((float)0.25);
                 }else if(generation.getAnimals().get(i).getPai().getHalfBrothers().contains(generation.getAnimals().get(i).getMae())){ // se entrar eh pq os pais sao meio irmaos
@@ -68,7 +68,7 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
                 brothers.add(generation.getAnimals().get(i)); // caso tiver mesmo pai e mesma mae eh um irmao completo
                 //System.out.println(this.animal.getId()+" e "+generation.getAnimals().get(i).getId()+" sao irmaos");
                 
-            }else if((generation.getAnimals().get(i).getIdPai().equals(animal.getIdPai()) && !generation.getAnimals().get(i).getIdMae().equals(animal.getIdMae())) || (generation.getAnimals().get(i).getIdMae().equals(animal.getIdMae()) && !generation.getAnimals().get(i).getIdPai().equals(animal.getIdPai()))&& !generation.getAnimals().get(i).getIdMae().equals("0")&& !generation.getAnimals().get(i).getIdPai().equals("0")){
+            }else if((generation.getAnimals().get(i).getIdPai().equals(animal.getIdPai()) && !generation.getAnimals().get(i).getIdMae().equals(animal.getIdMae())&& (!generation.getAnimals().get(i).getIdPai().equals("0"))) || (generation.getAnimals().get(i).getIdMae().equals(animal.getIdMae()) && !generation.getAnimals().get(i).getIdPai().equals(animal.getIdPai()) && !generation.getAnimals().get(i).getIdMae().equals("0"))){
                 halfBrothers.add(generation.getAnimals().get(i)); // caso for irmao somente de pai ou somente de mae eh meio irmao
                 //System.out.println(this.animal.getId()+" e "+generation.getAnimals().get(i).getId()+" sao meio irmaos");
             }
