@@ -59,18 +59,22 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
                 }
                 if (pedigreeList.get(j).getIdMae().equals(geracao.getAnimals().get(i).id)) {
                     pedigreeList.get(j).setMae(geracao.getAnimals().get(i));
+                    pedigreeList.get(j).Mae.children.add(pedigreeList.get(j));
                     for(int k=0;k<geracao.getAnimals().size();k++){
                         if(geracao.getAnimals().get(k).id.equals(pedigreeList.get(j).idPai)){
                             pedigreeList.get(j).setPai(geracao.getAnimals().get(k));
+                            pedigreeList.get(j).Pai.children.add(pedigreeList.get(j));
                             break;
                         }
                     }
                 }
                 if (pedigreeList.get(j).getIdPai().equals(geracao.getAnimals().get(i).id)) { 
                     pedigreeList.get(j).setPai(geracao.getAnimals().get(i));
+                    pedigreeList.get(j).Pai.children.add(pedigreeList.get(j));
                     for(int k=0;k<geracao.getAnimals().size();k++){
                         if(geracao.getAnimals().get(k).id.equals(pedigreeList.get(j).idMae)){
                             pedigreeList.get(j).setMae(geracao.getAnimals().get(k));
+                            pedigreeList.get(j).Mae.children.add(pedigreeList.get(j));
                             break;
                         }
                     }

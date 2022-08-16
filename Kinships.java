@@ -20,9 +20,11 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
                 generation.getAnimals().get(i).setParentsKin((float)0);
                 if(generation.getAnimals().get(i).getMae()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()] = (float)0.5;
+                this.mat[generation.getAnimals().get(i).getMae().getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()];
                 }
                 if(generation.getAnimals().get(i).getPai()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()] = (float)0.5;
+                this.mat[generation.getAnimals().get(i).getPai().getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()];
                 }
                 if(!this.brothers.isEmpty()){
                     for(int j=0;j<generation.getAnimals().get(i).getBrothers().size();j++){
@@ -44,8 +46,10 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
                 }
                 if(generation.getAnimals().get(i).getMae()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()] = (float)0.5+((generation.getAnimals().get(i).getParentsKin()/2));
+                this.mat[generation.getAnimals().get(i).getMae().getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()];
                 } if(generation.getAnimals().get(i).getPai()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()] = (float)0.5+((generation.getAnimals().get(i).getParentsKin()/2));
+                this.mat[generation.getAnimals().get(i).getPai().getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()];
                 }
                 if(!this.halfBrothers.isEmpty()){
                     for(int j=0;j<generation.getAnimals().get(i).getBrothers().size();j++){

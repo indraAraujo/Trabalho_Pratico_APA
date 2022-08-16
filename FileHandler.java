@@ -95,7 +95,7 @@ public class FileHandler {
 				buffWrite.append("\"" + idAnimal + "\",\"" + idAnimal + "\",\""
 						+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).index]
 						+ "\"\n");
-				// PARENTESCO COM OS DEMAIS
+				// PARENTESCO COM OS IRMAOS E MEIO IRMAOS
 				for(int j=0;j<geracoes.get(g).getAnimals().get(i).brothers.size();j++){
 					buffWrite.append("\"" + idAnimal + "\",\"" + geracoes.get(g).getAnimals().get(i).getBrothers().get(j).id + "\",\""
 					+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).getBrothers().get(j).getIndex()]
@@ -104,6 +104,12 @@ public class FileHandler {
 				for(int j=0;j<geracoes.get(g).getAnimals().get(i).halfBrothers.size();j++){
 					buffWrite.append("\"" + idAnimal + "\",\"" + geracoes.get(g).getAnimals().get(i).getHalfBrothers().get(j).id + "\",\""
 					+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).getHalfBrothers().get(j).getIndex()]
+					+ "\"\n");
+				}
+				// PARENTESCO COM OS FILHOS
+				for(int j=0;j<geracoes.get(g).getAnimals().get(i).children.size();j++){
+					buffWrite.append("\"" + idAnimal + "\",\"" + geracoes.get(g).getAnimals().get(i).getChildren().get(j).id + "\",\""
+					+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).getChildren().get(j).getIndex()]
 					+ "\"\n");
 				}
 			}

@@ -13,6 +13,7 @@ public class Pedigree { // classe que define cada animal presente na entrada
     String idMae;
     LinkedList<Pedigree> halfBrothers;
     LinkedList<Pedigree> brothers;
+    LinkedList<Pedigree> children = new LinkedList<Pedigree>();
 
     public Pedigree(String id, String idPai, String idMae, int index) {
         this.id = id;
@@ -72,6 +73,14 @@ public class Pedigree { // classe que define cada animal presente na entrada
 
     public void setBrothers(LinkedList<Pedigree> brothers) {
         this.brothers = brothers;
+    }
+
+    public LinkedList<Pedigree> getChildren() {
+        return this.children;
+    }
+
+    public void setChildren(LinkedList<Pedigree> children) {
+        this.children = children;
     }
 
     public float getParentsKin() {
