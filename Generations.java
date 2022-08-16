@@ -31,8 +31,8 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
 
     public void generationZero(LinkedList<Pedigree> pedigreeList) { // funcao para criar a geracao 0 (geracao com pai &&
                                                                     // mae == 0)
-        System.out.println("Total de animais: " + pedigreeList.size());
-        System.out.println("----------------------------------------------\nConstruindo a geracao " + this.gen);
+        //System.out.println("Total de animais: " + pedigreeList.size());
+        //System.out.println("----------------------------------------------\nConstruindo a geracao " + this.gen);
         for (int i = 0; i < pedigreeList.size(); i++) {
             if (pedigreeList.get(i).getIdPai().equals("0") && pedigreeList.get(i).getIdMae().equals("0")) {
                 pedigreeList.get(i).brothers = new LinkedList<Pedigree>();
@@ -42,14 +42,14 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
                 i--;
             }
         }
-        System.out.println("Numero de animais da geracao 0: " + this.getAnimals().size());
-        System.out.println("Restante " + pedigreeList.size());
+        //System.out.println("Numero de animais da geracao 0: " + this.getAnimals().size());
+        //System.out.println("Restante " + pedigreeList.size());
     }
 
     public int followingGenerations(Generations geracao, LinkedList<Pedigree> pedigreeList, Kinships parentesco,
             LinkedList<Generations> geracoes) { // funcao para criar as geracoes seguintes (geracoes != 0)
         Pedigree zero = new Pedigree("0");
-        System.out.println("\nConstruindo geracao " + this.gen);
+        //System.out.println("\nConstruindo geracao " + this.gen);
         for (int i = 0; i < geracao.getAnimals().size(); i++) {
             for (int j = 0; j < pedigreeList.size(); j++) {
                 if(pedigreeList.get(j).idPai.equals("0")){
@@ -92,15 +92,15 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
         if (pedigreeList.size() == 0) {
             // igp
         } else {
-            System.out.println("Sem animais na geracao - final da familia");
+          //  System.out.println("Sem animais na geracao - final da familia");
         }
         return 0;
     }else
     {
-        System.out.println("Numero de animais da geracao " + this.gen + ": " + this.getAnimals().size());
-        System.out.println("Restante " + pedigreeList.size());
+    //    System.out.println("Numero de animais da geracao " + this.gen + ": " + this.getAnimals().size());
+      //  System.out.println("Restante " + pedigreeList.size());
         if (pedigreeList.size() == 0) {
-            System.out.println("----------------------------------------------\nTodos os animais inseridos.");
+        //    System.out.println("----------------------------------------------\nTodos os animais inseridos.");
             return 0;
         }
         return 1;

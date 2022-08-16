@@ -4,15 +4,18 @@ import java.util.LinkedList;
 public class Main {
     public static void main(String args[]) throws IOException {
         FileHandler arq = new FileHandler(args[0]);
-        String pathparentesco = args[1];
         LinkedList<Pedigree> pedigreeList;
         LinkedList<Generations> geracoes = new LinkedList<Generations>();
+        long tLeitura,tParentesco,tEscrita;
         Generations nextGeneration;
         Generations geracao;
         int moreChildren = 1, genNumber = 0;
+        System.out.println("Iniciando...");
+		long tempoInicial = System.nanoTime();
         pedigreeList = arq.dataFix(); // PREPROCESSAMENTO, explicacao em filehandler
         arq = new FileHandler(args[0]);
         pedigreeList = arq.lerArquivo(pedigreeList); // le a entrada
+        tLeitura=(System.nanoTime() - tempoInicial);
         int matSize = pedigreeList.size()+1; // define o tamanho da matriz de saida (total de animais x total de animais, pois a relacao de parentesco tem que ser de 1 pra 1)
         arq.escritor("new.csv", pedigreeList); // cria new.csv, o banco de dados corrigido, com todos os animais
 
@@ -20,25 +23,29 @@ public class Main {
             moreChildren = 1;
             geracao = new Generations(0);
             geracoes.add(geracao);
+            tempoInicial = System.nanoTime();
             geracao.generationZero(pedigreeList); // cria a geracao 0
-            Kinships parentesco = new Kinships(matSize,geracao); // cria a matriz de parentesco
+            Kinships parentesco = new Kinships(matSize,geracao,arq.output); // cria a matriz de parentesco
             
-            while (moreChildren == 1) { // enquanto existam animais que nao estao adicionados na arvore genealogica
+            while (moreChildren == 1) {// enquanto existam animais que nao estao adicionados na arvore genealogica
                 genNumber++;
                 nextGeneration = new Generations(genNumber);  // cria uma nova geracao
                 moreChildren = nextGeneration.followingGenerations(geracao, pedigreeList,parentesco,geracoes); // essa funcao existe pra encontrar a relacao entre a geracao passada e seus filhos
                 geracoes.add(nextGeneration); // adiciona a nova geracao a lista de geracoes
                 geracao = nextGeneration; // seta a geracao passada pra ser igual a geracao atual, para assim dar continuidade as proximas geracoes
-                parentesco.addKinship(nextGeneration); // adiciona os parentescos da geracao 
+                parentesco.addKinship(nextGeneration,arq.output); // adiciona os parentescos da geracao 
             }
-        arq.createKinships(args[1], parentesco.mat,matSize); // quando nao existam mais animais para serem inseridos, cria um .txt com a matriz de parentesco
+            tParentesco=(System.nanoTime() - tempoInicial);
+        arq.createKinships("parentesco.txt", parentesco.mat,matSize); // quando nao existam mais animais para serem inseridos, cria um .txt com a matriz de parentesco
           try {                                                           // para entender essa matriz de parentesco, olhem para o new.csv que seria o banco de dados correto
-            System.out.println("**********************************************\nGerando arquivo de saida...\n"); 
-          arq.writeAll("geracoes.txt",geracoes); // gera uma saida com a lista de geracoes e os correspondentes animais 
+            System.out.println("Calculo finalizado."); 
+            //arq.writeAll("geracoes.txt",geracoes); // gera uma saida com a lista de geracoes e os correspondentes animais 
+            tempoInicial = System.nanoTime();
+          arq.outputGenerator(args[1],geracoes,parentesco.mat); // gerando parentesco => animal1 animal2 grau_de_parentesco
+          tEscrita = tLeitura=(System.nanoTime() - tempoInicial);
+          System.out.println("Tempo de preprocessamento e leitura: "+tEscrita+"ns\nTempo do calculo de parentesco: "+tParentesco+"ns\nTempo de escrita na saida :"+tEscrita+"ns");
           } catch (IOException e) {
           e.printStackTrace();
           }
-         
-
     }
 }

@@ -5,14 +5,14 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
     LinkedList <Pedigree> brothers;
     LinkedList <Pedigree> halfBrothers;
 
-    public Kinships(int matSize, Generations geracao){
+    public Kinships(int matSize, Generations geracao,String[][] output){
         this.mat = new float[matSize][matSize];
         for(int i=0;i<geracao.getAnimals().size();i++){
             mat[geracao.getAnimals().get(i).getIndex()][geracao.getAnimals().get(i).getIndex()] = (float)1;
         }
     }
     
-    public void addKinship(Generations generation){ // preenche a matriz de coanscestralidade
+    public void addKinship(Generations generation, String[][] output){ // preenche a matriz de coanscestralidade
         for(int i=0;i<generation.getAnimals().size();i++){          // vai pegando os animais da geracao
             this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getIndex()] = (float)1;
             searchForBrothers(generation.getAnimals().get(i), generation);
