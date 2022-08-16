@@ -71,47 +71,12 @@ public class FileHandler {
 		buffWrite.close();
 	}
 
-	public void outputGenerator(String path, LinkedList<Generations> geracoes, float[][] mat) throws IOException {
+	public void outputGenerator(String path, String[] ids, float[][] mat,int matSize) throws IOException {
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
-		String idAnimal, idMae, idPai;
-		for (int g = 0; g < geracoes.size(); g++) {
-			for (int i = 0; i < geracoes.get(g).getAnimals().size(); i++) {
-				// PARENTESCO COM OS PAIS
-				idAnimal = geracoes.get(g).getAnimals().get(i).id;
-				if (!geracoes.get(g).getAnimals().get(i).idMae.equals("0")) {
-					idMae = geracoes.get(g).getAnimals().get(i).getMae().id;
-					buffWrite.append("\"" + idAnimal + "\",\"" + idMae + "\",\""
-					+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).getMae()
-							.getIndex()]
-					+ "\"\n");
-				}
-				if (!geracoes.get(g).getAnimals().get(i).idPai.equals("0")) {
-					idPai = geracoes.get(g).getAnimals().get(i).getPai().id;
-					buffWrite.append("\"" + idAnimal + "\",\"" + idPai + "\",\""
-						+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).getPai()
-								.getIndex()]
-						+ "\"\n");
-				}
-				buffWrite.append("\"" + idAnimal + "\",\"" + idAnimal + "\",\""
-						+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).index]
-						+ "\"\n");
-				// PARENTESCO COM OS IRMAOS E MEIO IRMAOS
-				for(int j=0;j<geracoes.get(g).getAnimals().get(i).brothers.size();j++){
-					buffWrite.append("\"" + idAnimal + "\",\"" + geracoes.get(g).getAnimals().get(i).getBrothers().get(j).id + "\",\""
-					+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).getBrothers().get(j).getIndex()]
-					+ "\"\n");
-				}
-				for(int j=0;j<geracoes.get(g).getAnimals().get(i).halfBrothers.size();j++){
-					buffWrite.append("\"" + idAnimal + "\",\"" + geracoes.get(g).getAnimals().get(i).getHalfBrothers().get(j).id + "\",\""
-					+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).getHalfBrothers().get(j).getIndex()]
-					+ "\"\n");
-				}
-				// PARENTESCO COM OS FILHOS
-				for(int j=0;j<geracoes.get(g).getAnimals().get(i).children.size();j++){
-					buffWrite.append("\"" + idAnimal + "\",\"" + geracoes.get(g).getAnimals().get(i).getChildren().get(j).id + "\",\""
-					+ mat[geracoes.get(g).getAnimals().get(i).index][geracoes.get(g).getAnimals().get(i).getChildren().get(j).getIndex()]
-					+ "\"\n");
-				}
+		for (int i = 1; i < matSize; i++) {
+			for(int j = 1; j < matSize; j++){
+				buffWrite.append("\"" + ids[i] + "\",\"" + ids[j] + "\",\""
+					+ mat[i][j] + "\"\n");
 			}
 		}
 		buffWrite.close();

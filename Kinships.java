@@ -2,19 +2,23 @@ import java.util.*;
 
 public class Kinships { // classe que gera a matriz de coanscestralidade
     float[][] mat;      // vai criando lista de irmaos e meio irmaos, e assim calcula o parentesco de um animal com seus irmaos/meio irmaos
+    String[] ids;
     LinkedList <Pedigree> brothers;
     LinkedList <Pedigree> halfBrothers;
 
     public Kinships(int matSize, Generations geracao,String[][] output){
         this.mat = new float[matSize][matSize];
+        this.ids = new String[matSize];
         for(int i=0;i<geracao.getAnimals().size();i++){
             mat[geracao.getAnimals().get(i).getIndex()][geracao.getAnimals().get(i).getIndex()] = (float)1;
+            ids[geracao.getAnimals().get(i).getIndex()] = geracao.getAnimals().get(i).id;
         }
     }
     
     public void addKinship(Generations generation, String[][] output){ // preenche a matriz de coanscestralidade
         for(int i=0;i<generation.getAnimals().size();i++){          // vai pegando os animais da geracao
             this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getIndex()] = (float)1;
+            ids[generation.getAnimals().get(i).getIndex()] = generation.getAnimals().get(i).id;
             searchForBrothers(generation.getAnimals().get(i), generation);
             if(generation.getGen() == 1){
                 generation.getAnimals().get(i).setParentsKin((float)0);
@@ -47,10 +51,28 @@ public class Kinships { // classe que gera a matriz de coanscestralidade
                 if(generation.getAnimals().get(i).getMae()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()] = (float)0.5+((generation.getAnimals().get(i).getParentsKin()/2));
                 this.mat[generation.getAnimals().get(i).getMae().getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getMae().getIndex()];
+                if(generation.getAnimals().get(i).Mae.brothers!=null){
+                for(int j=0;j<generation.getAnimals().get(i).Mae.brothers.size();j++){
+                    this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Mae.brothers.get(j).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Mae.index]*this.mat[generation.getAnimals().get(i).Mae.index][generation.getAnimals().get(i).Mae.brothers.get(j).getIndex()];
+                    this.mat[generation.getAnimals().get(i).Mae.brothers.get(j).getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Mae.brothers.get(j).getIndex()];
+                }}if(generation.getAnimals().get(i).Mae.brothers!=null){
+                    for(int j=0;j<generation.getAnimals().get(i).Mae.halfBrothers.size();j++){
+                    this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Mae.halfBrothers.get(j).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Mae.index]*this.mat[generation.getAnimals().get(i).Mae.index][generation.getAnimals().get(i).Mae.halfBrothers.get(j).getIndex()];
+                    this.mat[generation.getAnimals().get(i).Mae.halfBrothers.get(j).getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Mae.halfBrothers.get(j).getIndex()];
+                }}
                 } if(generation.getAnimals().get(i).getPai()!=null){
                 this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()] = (float)0.5+((generation.getAnimals().get(i).getParentsKin()/2));
                 this.mat[generation.getAnimals().get(i).getPai().getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getPai().getIndex()];
-                }
+                if(generation.getAnimals().get(i).Pai.brothers!=null){
+                for(int j=0;j<generation.getAnimals().get(i).Pai.brothers.size();j++){
+                    this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Pai.brothers.get(j).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Pai.index]*this.mat[generation.getAnimals().get(i).Pai.index][generation.getAnimals().get(i).Pai.brothers.get(j).getIndex()];
+                    this.mat[generation.getAnimals().get(i).Pai.brothers.get(j).getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Pai.brothers.get(j).getIndex()];
+                }}if(generation.getAnimals().get(i).Pai.halfBrothers!=null){
+                for(int j=0;j<generation.getAnimals().get(i).Pai.halfBrothers.size();j++){
+                    this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Pai.halfBrothers.get(j).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Pai.index]*this.mat[generation.getAnimals().get(i).Pai.index][generation.getAnimals().get(i).Pai.halfBrothers.get(j).getIndex()];
+                    this.mat[generation.getAnimals().get(i).Pai.halfBrothers.get(j).getIndex()][generation.getAnimals().get(i).getIndex()] = this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).Pai.halfBrothers.get(j).getIndex()];
+                }}
+            }
                 if(!this.halfBrothers.isEmpty()){
                     for(int j=0;j<generation.getAnimals().get(i).getBrothers().size();j++){
                         this.mat[generation.getAnimals().get(i).getIndex()][generation.getAnimals().get(i).getBrothers().get(j).getIndex()] = (float)0.25+(generation.getAnimals().get(i).getParentsKin()/4);
