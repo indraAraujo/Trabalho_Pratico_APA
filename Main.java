@@ -43,7 +43,7 @@ public class Main {
             tempoInicial = System.nanoTime();
           arq.outputGenerator(args[1],geracoes,parentesco.mat); // gerando parentesco => animal1 animal2 grau_de_parentesco
           tEscrita = tLeitura=(System.nanoTime() - tempoInicial);
-          System.out.println("Tempo de preprocessamento e leitura: "+tEscrita+"ns\nTempo do calculo de parentesco: "+tParentesco+"ns\nTempo de escrita na saida :"+tEscrita+"ns");
+          System.out.println("Tempo de preprocessamento e leitura: "+tLeitura+"ns\nTempo do calculo de parentesco: "+tParentesco+"ns\nTempo de escrita na saida :"+tEscrita+"ns");
           } catch (IOException e) {
           e.printStackTrace();
           }
