@@ -2,4 +2,4 @@
 
 ## Para rodar: java Main arquivo_entrada.txt arquivo_saida.txt
 
-### É gerado um novo arquivo new.csv contendo o database corrigido. O parentesco dos animais é calculado individualmente em forma de matriz. O indice do animal no new.csv representa tanto sua linha quanto sua coluna correspondente i.e, Matriz[1][2] = grau de parentesco entre o animal 1 e 2 (new.csv).
+### É gerado um novo arquivo new.csv contendo o database corrigido. O parentesco dos animais é calculado e guardado em uma matriz. No arquivo de saida é mostrado o grau de parentesco de cada animal com todos seus parentes (caso não apareça na saida, não existe parentesco i.e, grau de parentesco entre animal1 e animal2 = 0).
