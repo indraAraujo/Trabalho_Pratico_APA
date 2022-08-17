@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.LinkedList;
 
+/*
+	Lida com os tratamentos dos arquivos
+*/
 public class FileHandler {
 	File file;
 	String fileName;
@@ -23,9 +26,10 @@ public class FileHandler {
 		}
 	}
 
-	public void escritor(String path, LinkedList<Pedigree> pedigreeList) throws IOException { // funcao pra criar o
-																								// new.csv (explicacao
-																								// abaixo)
+	/*
+		Cria um novo arquivo com o banco de dados corrigidos
+	*/
+	public void escritor(String path, LinkedList<Pedigree> pedigreeList) throws IOException { 
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
 		this.output = new String[pedigreeList.size() * pedigreeList.size()][3];
 		this.lines = pedigreeList.size() * pedigreeList.size();
@@ -37,9 +41,10 @@ public class FileHandler {
 		buffWrite.close();
 	}
 
-	public void createKinships(String path, float[][] mat, int matSize) throws IOException { // funcao que cria a matriz
-																								// de saida
-																								// (parentesco.txt)
+	/*
+		Cria a matriz de saída e salva no arquivo parentesco.txt
+	*/
+	public void createKinships(String path, float[][] mat, int matSize) throws IOException { 
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
 		for (int i = 1; i < matSize; i++) {
 			for (int j = 1; j < matSize; j++) {
@@ -50,10 +55,10 @@ public class FileHandler {
 		buffWrite.close();
 	}
 
-	public void writeAll(String path, LinkedList<Generations> generations) throws IOException { // funcao que cria a
-																								// lista geracoes com
-																								// seus respectivos
-																								// animais
+	/*
+		Cria a lista de gerações com seus respectivos animais
+	*/
+	public void writeAll(String path, LinkedList<Generations> generations) throws IOException { 
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
 		for (int i = 0; i < generations.size(); i++) {
 			buffWrite.append(generations.get(i).gen + "<");
@@ -71,6 +76,9 @@ public class FileHandler {
 		buffWrite.close();
 	}
 
+	/*
+		Salva os parentescos calculados no arquivo de saída
+	*/
 	public void outputGenerator(String path, String[] ids, float[][] mat,int matSize) throws IOException {
 		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
 		for (int i = 1; i < matSize; i++) {
@@ -82,7 +90,10 @@ public class FileHandler {
 		buffWrite.close();
 	}
 
-	public LinkedList<Pedigree> lerArquivo(LinkedList<Pedigree> fixData) { // funcao que le a entrada
+	/*
+		Lê o arquivo de entrada com os bancos de dados corrigidos
+	*/
+	public LinkedList<Pedigree> lerArquivo(LinkedList<Pedigree> fixData) { 
 		LinkedList<Pedigree> pedigreeList = fixData;
 		LinkedList<String> ids = new LinkedList<String>();
 		for (int i = 0; i < pedigreeList.size(); i++) {
@@ -95,49 +106,31 @@ public class FileHandler {
 			String line = scanner.nextLine();
 			String[] animal;
 			animal = line.split(",");
-			/*
-			 * for(int i=0;i<pedigreeList.size();i++){
-			 * if(pedigreeList.get(i).id.equals(pai.id)){
-			 * pai.setIndex(pedigreeList.get(i).index);
-			 * }else if(pedigreeList.get(i).id.equals(mae.id)){
-			 * mae.setIndex(pedigreeList.get(i).index);
-			 * }
-			 * }
-			 */
 			Pedigree exemplo = new Pedigree(animal[0].replace("\"", ""), animal[1].replace("\"", ""),
 					animal[2].replace("\"", ""), (cont + shift));
-			// System.out.println(exemplo.toString());
 			pedigreeList.add(exemplo);
 			cont++;
 		}
 		return pedigreeList;
 	}
 
-	public LinkedList<Pedigree> dataFix() { // essa funcao eh a funcao que faz o preprocessamente que eu estava falando,
-											// ela eh MUITO importante porque nesse .csv
-		LinkedList<String> filhos = new LinkedList<String>(); // de entrada existem alguns pais e maes que sao
-																// referenciados, que nem ao menos fazem parte do banco
-		LinkedList<String> pais = new LinkedList<String>(); // isto eh, imaginem que o animal X esta dizendo que seus
-															// pais sao Y e Z, porem Y e Z nao fazem parte
-		LinkedList<Pedigree> complement = new LinkedList<Pedigree>(); // do banco de dados. Isso acontece direto nesse
-																		// banco, entao esta funcao eh essencial.
-		String id; // Se nao usar essa funcao a arvore genealogica fica quebrada em diversas
-					// arvores
-		Pedigree emptyAncestor; // pois ela nao consegue criar uma relacao entre todos os animais, em outras
-								// palavras
-		scanner.nextLine(); // a geracao 0 nao fica completa, e isso quebra toda a arvore.
+	/*
+		Descobre quais os animais que são referenciados e não estão no arquivo de entrada original
+	*/
+	public LinkedList<Pedigree> dataFix() { 
+		LinkedList<String> filhos = new LinkedList<String>(); 
+		LinkedList<String> pais = new LinkedList<String>(); 
+		LinkedList<Pedigree> complement = new LinkedList<Pedigree>();
+		String id; 
+		Pedigree emptyAncestor; 
+		scanner.nextLine(); 
 		while (scanner.hasNext()) {
-			String line = scanner.nextLine(); // basicamente esta funcao rola antes de ler de vez o .csv, ele procura
-												// por esses pais que
-			String[] animal; // nao estao presentes no banco de dados, e adiciona eles no COMECO do new.csv,
-								// com seus pais.
-			String[] words = line.split("\n"); // sendo 0 e 0 (assim eles tambem pertencem a geracao 0). Caso essa
-												// funcao nao existisse e a gente
-			for (int i = 0; i < words.length; i++) { // simplesmente assumisse que esses pais e maes que nao estao no
-														// banco fossem igual a 0, nao seriam
-				animal = line.split(","); // considerados parentescos entre irmaos desses pais e maes, entao, mais uma
-											// vez, essa funcao eh
-				if (!filhos.contains(animal[0])) { // essencial pro programa.
+			String line = scanner.nextLine(); 
+			String[] animal; 
+			String[] words = line.split("\n"); 
+			for (int i = 0; i < words.length; i++) { 
+				animal = line.split(","); 
+				if (!filhos.contains(animal[0])) { 
 					filhos.add(animal[0]);
 				}
 				if (!pais.contains(animal[1])) {
@@ -148,21 +141,16 @@ public class FileHandler {
 				}
 			}
 		}
-		// System.out.println("Pais: "+pais.size());
-		// System.out.println("Iniciando preprocessamento...");
 		for (int i = 0; i < pais.size(); i++) {
 			if (filhos.contains(pais.get(i))) {
 				pais.remove(i);
 				i--;
 			}
 		}
-		// System.out.println("** Fim **");
-		// System.out.println("Pais: "+pais.size());
 		for (int i = 1; i < pais.size(); i++) {
 			id = pais.get(i);
 			emptyAncestor = new Pedigree(id.replace("\"", ""), "0", i);
 			complement.add(emptyAncestor);
-			// System.out.println(emptyAncestor.toString());
 		}
 
 		return complement;

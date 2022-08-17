@@ -12,12 +12,12 @@ public class Main {
         int moreChildren = 1, genNumber = 0;
         System.out.println("Iniciando...");
 		long tempoInicial = System.currentTimeMillis();
-        pedigreeList = arq.dataFix(); // PREPROCESSAMENTO, explicacao em filehandler
+        pedigreeList = arq.dataFix(); // PREPROCESSAMENTO
         arq = new FileHandler(args[0]);
         pedigreeList = arq.lerArquivo(pedigreeList); // le a entrada
         tLeitura=(System.currentTimeMillis() - tempoInicial);
         int matSize = pedigreeList.size()+1; // define o tamanho da matriz de saida (total de animais x total de animais, pois a relacao de parentesco tem que ser de 1 pra 1)
-        arq.escritor("new.csv", pedigreeList); // cria new.csv, o banco de dados corrigido, com todos os animais
+        arq.escritor("new.csv", pedigreeList); 
 
             genNumber = 0;
             moreChildren = 1;

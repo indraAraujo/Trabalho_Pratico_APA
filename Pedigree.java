@@ -1,11 +1,11 @@
 import java.util.*;
 
-public class Pedigree { // classe que define cada animal presente na entrada
-                            // essa propriedade de indexPai e indexMae nao estao 100% funcionais, mas seria otimo terminar elas pra matriz pegar 100%
-    String id = "NULL";         // o erro esta la na classe generations, como aquela classe pega um animal X e procura seus filhos (Y's) na lista de animais
-                                 // somente ta fazendo relacao desses Y's somente com a mae ou com o pai (normalmente, com a mae)
-                                    // teria que corrigir isso de alguma forma, pra conseguir setar o index do pai e da mae desse animal
-    float parentsKin;                   // assim seria otimo pra inserir rapido na matriz, pois ja saberiamos a posicao pra criar o parentesco
+/*
+    Define as características dos animais da entrada
+*/
+public class Pedigree {
+    String id = "NULL";        
+    float parentsKin;            
     int index;
     Pedigree Mae;
     Pedigree Pai;

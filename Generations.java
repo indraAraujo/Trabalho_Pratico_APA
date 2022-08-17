@@ -1,8 +1,10 @@
 import java.util.*;
 
-public class Generations { // classe que monta a arvore genialogica baseado nas geracoes.
-    int gen; // primeiro a geracao 0, dps a geracao 1 (filhos da geracao 0), dps geracao 2
-             // (filhos da geracao 1) ... etc
+/*
+    Trata a árvore genialógica
+*/
+public class Generations { 
+    int gen; 
     ArrayList<Pedigree> animals = new ArrayList<Pedigree>();
 
     public Generations(int gen) {
@@ -29,10 +31,11 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
         this.animals = animals;
     }
 
-    public void generationZero(LinkedList<Pedigree> pedigreeList) { // funcao para criar a geracao 0 (geracao com pai &&
-                                                                    // mae == 0)
+    /*
+        Cria a geração 0
+    */
+    public void generationZero(LinkedList<Pedigree> pedigreeList) { 
         System.out.println("Total de animais: " + pedigreeList.size());
-        //System.out.println("----------------------------------------------\nConstruindo a geracao " + this.gen);
         for (int i = 0; i < pedigreeList.size(); i++) {
             if (pedigreeList.get(i).getIdPai().equals("0") && pedigreeList.get(i).getIdMae().equals("0")) {
                 pedigreeList.get(i).brothers = new LinkedList<Pedigree>();
@@ -46,8 +49,11 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
         System.out.println("Restante " + pedigreeList.size());
     }
 
+    /*
+        Cria as outras gerações depois da geração 0
+    */
     public int followingGenerations(Generations geracao, LinkedList<Pedigree> pedigreeList, Kinships parentesco,
-            LinkedList<Generations> geracoes) { // funcao para criar as geracoes seguintes (geracoes != 0)
+            LinkedList<Generations> geracoes) { 
         Pedigree zero = new Pedigree("0");
         System.out.println("\nConstruindo geracao " + this.gen);
         for (int i = 0; i < geracao.getAnimals().size(); i++) {
@@ -88,17 +94,14 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
         }
 
 
-    if(this.getAnimals().size()==0)
-
-    {
+    if(this.getAnimals().size()==0) {
         if (pedigreeList.size() == 0) {
             // igp
         } else {
             System.out.println("Sem animais na geracao - final da familia");
         }
         return 0;
-    }else
-    {
+    }else{
         System.out.println("Numero de animais da geracao " + this.gen + ": " + this.getAnimals().size());
         System.out.println("Restante " + pedigreeList.size());
         if (pedigreeList.size() == 0) {
@@ -106,8 +109,6 @@ public class Generations { // classe que monta a arvore genialogica baseado nas 
             return 0;
         }
         return 1;
-
-
 }
 
 }
